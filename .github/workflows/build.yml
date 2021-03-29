@@ -1,0 +1,41 @@
+---
+name: build
+
+on:
+  push:
+    branches: [master]
+  schedule:
+    - cron: "0 0 * * 0"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Clone webui-aria2
+        uses: actions/checkout@v2
+        with:
+          name: ziahamza/webui-aria2
+          path: webui/webui-aria2
+
+      - name: Build and push webui-aria2
+        uses: docker/build-push-action@v2
+        with:
+          context: ./webui/
+          tags: devonm/webui-aria2:latest
+          push: true
+
+      - name: Build and push aria2
+        uses: docker/build-push-action@v2
+        with:
+          context: ./aria2/
+          tags: devonm/aria2:latest
+          push: true
