@@ -23,7 +23,7 @@ jobs:
       - name: Clone webui-aria2
         uses: actions/checkout@v2
         with:
-          name: ziahamza/webui-aria2
+          repository: ziahamza/webui-aria2
           path: webui/webui-aria2
 
       - name: Build and push webui-aria2
